@@ -2,13 +2,15 @@
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../style-foundation/shared-styles.html">
 
+<link rel="import" href="../../bower_components/voice-elements/dist/voice-player.html">
+
 <dom-module id="app-login">
     <template>
         <style include="shared-styles">
             
             .login-container{
                 width: 100%;
-                height: 100vh;
+                height: calc(100vh - 64px);
                 background-color: var(--primary-color,#fafafa);
                 color:var(--lz-white,#fafafa);
                 display: flex;
@@ -16,8 +18,9 @@
             }
 
             #logo {
-                width: 285px;
-                margin:248px auto 0 auto;
+                width: 180px;
+                height: 35px;
+                margin:130px auto 0 auto;
             }
 
             #login-text {
@@ -30,13 +33,13 @@
 
         </style>
 
+        <voice-player id="loginSpeaker" accent="es-MX" text="Bienvenido a lazme, porfavor ingresa tu contraseña">
+            
+        </voice-player>
+
         <div class="login-container">
             
-            <div id="logo">
-                <iron-image  src="/assets/images/logo.png">                
-                </iron-image>                
-            </div>
-
+            <img src="/assets/images/logo.png" alt="lazme logo" id="logo">
 
             <p id="login-text">
                 Menciona tu contaseña
@@ -52,6 +55,11 @@
 
             class AppLogin extends Polymer.Element {
                 static get is() { return 'app-login'; }
+
+                connectedCallback(){
+                    super.connectedCallback();
+                    this.$.loginSpeaker.speak();
+                }
             }
             customElements.define(AppLogin.is, AppLogin);
         })(window.customElements);

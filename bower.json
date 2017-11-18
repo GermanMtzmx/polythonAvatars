@@ -35,7 +35,8 @@
     "paper-input": "PolymerElements/paper-input#^2.0.3",
     "google-map": "GoogleWebComponents/google-map#^2.0.3",
     "geo-location": "ebidel/geo-location#^2.0.1",
-    "iron-image": "PolymerElements/iron-image#^2.1.2"
-
+    "iron-image": "PolymerElements/iron-image#^2.1.2",
+    "paper-icon-button": "PolymerElements/paper-icon-button#^2.0.1",
+    "voice-elements": "zenorocha/voice-elements#^1.0.0"
   }
 }
