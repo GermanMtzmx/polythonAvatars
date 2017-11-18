@@ -33,6 +33,9 @@
     "iron-form": "PolymerElements/iron-form#^2.0.1",
     "app-layout": "PolymerElements/app-layout#^2.0.4",
     "paper-input": "PolymerElements/paper-input#^2.0.3",
+    "google-map": "GoogleWebComponents/google-map#^2.0.3",
+    "geo-location": "ebidel/geo-location#^2.0.1",
     "iron-image": "PolymerElements/iron-image#^2.1.2"
+
   }
 }
