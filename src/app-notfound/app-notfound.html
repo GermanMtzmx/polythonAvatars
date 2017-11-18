@@ -1,0 +1,20 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="app-notfound">
+    <template>
+        <style></style>
+    </template>
+
+    <script>
+        (function NotFound(customElements){
+            'use strict';
+
+            class AppNotfound extends Polymer.Element {
+                static get is() { return 'app-notfound'; }
+            }
+
+            customElements.define(AppNotfound.is, AppNotfound);
+        })(window.customElements);
+
+    </script>
+</dom-module>

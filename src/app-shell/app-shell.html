@@ -1,9 +1,41 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+
+
+<link rel="import" href="../app-login/app-login.html">
+<link rel="import" href="../app-notfound/app-notfound.html">
+<link rel="import" href="../app-home/app-home.html">
+
+<link rel="import" href="component.html">
+
 <dom-module id="app-shell">
     <template>
         <style></style>
-        <h1>Im shell</h1>
+        
+        <app-location route="{{route}}"></app-location>
+
+        <app-route 
+            route="{{route}}"
+            pattern="/:page"
+            data="{{routeData}}"
+            tail="{{subroute}}"
+        ></app-route>
+
+
+        <iron-pages 
+            role="main"
+            attr-for-selected="id"
+            selected="[[page]]"
+            fallback-selection="notFound"
+        >
+            <app-login id="login"></app-login>
+            <app-home id="home"></app-home>
+            <app-notfound id="notfound"></app-notfound>
+            
+        </iron-pages>
     </template>
 
 
@@ -13,6 +45,39 @@
 
             class AppShell extends Polymer.Element {
                 static get is(){ return 'app-shell'; }
+
+                static get properties(){
+                    return {
+                        route:{
+                            type:Object,
+                            value:{}  
+                        },
+
+                        subroute:{
+                            type:Object,
+                            value:{}
+                        },
+
+                        data:{
+                            type:Object,
+                            value:{}
+                        },
+
+                        page:{
+                            type:String
+                        }                        
+                    }                    
+                }
+
+                static get observers(){
+                    return [
+                        '_routePageChanged(routeData.page)'
+                    ]
+                }
+
+                _routePageChanged(page){
+                    this.page || 'login';
+                }
             }
 
             customElements.define(AppShell.is, AppShell);

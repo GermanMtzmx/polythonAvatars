@@ -1,0 +1,20 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="app-home">
+    <template>
+        <style>
+            
+        </style>
+    </template>
+
+    <script>
+        (function Home(customElements){
+            'use strict';
+
+            class AppHome exteds Polymer.Element {
+                static get is(){ return 'app-home'; }
+            }
+            customElements.define(AppHome.is, AppHome);
+        })(window.customElements);
+    </script>
+</dom-module>
