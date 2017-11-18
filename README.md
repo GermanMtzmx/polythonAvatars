@@ -15,3 +15,10 @@ npm install -g polymer-cli
 bower install
 npm install
 ```
+
+
+##Run the project
+
+```shell
+polymer serve 
+```
