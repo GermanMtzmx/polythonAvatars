@@ -2,17 +2,14 @@
 
 <dom-module id="app-home">
     <template>
-        <style>
-            
-        </style>
+        <h1>home</h1>
     </template>
 
     <script>
-        (function Home(customElements){
+        (function Home(customElements) {
             'use strict';
-
-            class AppHome exteds Polymer.Element {
-                static get is(){ return 'app-home'; }
+            class AppHome extends Polymer.Element {
+                static get is(){ return 'app-home' }
             }
             customElements.define(AppHome.is, AppHome);
         })(window.customElements);

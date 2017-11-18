@@ -1,15 +1,10 @@
 {
     "entrypoint": "index.html",
     "shell": "src/app-shell/app-shell.html",
-    "fragments": [
-
-    ],
-
-    "sources":[
+    "sources": [
         "src/**/*",
-        "assets/**7*",
-        "bower.json",
-        "package.json"
+        "assets/**/*",
+        "bower.json"
     ],
 
     "extraDependencies": [
@@ -17,8 +12,7 @@
     ],
 
     "builds": [
-        {"preset":"es6-unbundled"},
-        {"preset":"es5-unbundled"}
+        {"preset":"es6-unbundled"}
     ]
 
 }

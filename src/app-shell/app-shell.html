@@ -9,8 +9,6 @@
 <link rel="import" href="../app-notfound/app-notfound.html">
 <link rel="import" href="../app-home/app-home.html">
 
-<link rel="import" href="component.html">
-
 <dom-module id="app-shell">
     <template>
         <style></style>
@@ -29,7 +27,7 @@
             role="main"
             attr-for-selected="id"
             selected="[[page]]"
-            fallback-selection="notFound"
+            fallback-selection="notfound"
         >
             <app-login id="login"></app-login>
             <app-home id="home"></app-home>
@@ -58,7 +56,7 @@
                             value:{}
                         },
 
-                        data:{
+                        routeData:{
                             type:Object,
                             value:{}
                         },
@@ -76,7 +74,8 @@
                 }
 
                 _routePageChanged(page){
-                    this.page || 'login';
+                    this.page = page || 'login';
+                    console.log(this.page)
                 }
             }
 
