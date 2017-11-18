@@ -1,22 +1,29 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/app-route/app-location.html">
 <link rel="import" href="../../bower_components/app-route/app-route.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 
 <!-- local imports -->
 <link rel="import" href="../app-login/app-login.html">
 <link rel="import" href="../app-notfound/app-notfound.html">
 <link rel="import" href="../app-home/app-home.html">
+<link rel="import" href="../app-verification/app-verification.html">
 
-<<<<<<< HEAD
-=======
 <link rel="import" href="../style-foundation/app-theme.html">
->>>>>>> german_dev
+
 
 <dom-module id="app-shell">
     <template>
-        <style></style>
+        <style>
+            #header {
+                @apply --toolbar-theme;
+            }
+        </style>
         
         <app-location route="{{route}}"></app-location>
 
@@ -27,6 +34,13 @@
             tail="{{subroute}}"
         ></app-route>
 
+        <app-header id="header" role="navigation" shadow$="[[isLogged]]">
+            <app-toolbar class="toolbar">
+                <template is="dom-if" if="[[isLogged]]">
+                     <paper-icon-button id="previous" icon="icons:arrow-back"></paper-icon-button>                
+                </template>
+            </app-toolbar>
+        </app-header>
 
         <iron-pages 
             role="main"
@@ -37,6 +51,7 @@
             <app-login id="login"></app-login>
             <app-home id="home"></app-home>
             <app-notfound id="notfound"></app-notfound>
+            <app-verification id="verification"></app-verification>
             
         </iron-pages>
     </template>
@@ -68,7 +83,12 @@
 
                         page:{
                             type:String
-                        }                        
+                        },
+
+                        isLogged:{
+                            type:Boolean,
+                            value:false
+                        }                     
                     }                    
                 }
 
@@ -81,6 +101,9 @@
                 _routePageChanged(page){
                     this.page = page || 'login';
                     console.log(this.page)
+                   if (this.page != 'login'){
+                    this.isLogged = true
+                   }
                 }
             }
 
