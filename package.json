@@ -1,0 +1,23 @@
+{
+  "name": "polyton",
+  "version": "0.0.1",
+  "description": "asistente para tareas cotidianas bancarias con accesibilidad",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GermanMtzmx/polyton.git"
+  },
+  "keywords": [
+    "Polymer",
+    "Polyton"
+  ],
+  "author": "German, Ynna, David, Carlos",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GermanMtzmx/polyton/issues"
+  },
+  "homepage": "https://github.com/GermanMtzmx/polyton#readme"
+}
