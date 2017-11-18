@@ -1,0 +1,42 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/google-map/google-map.html">
+<link rel="import" href="../../bower_components/geo-location/geo-location.html">
+
+<dom-module id="app-map">
+    <template>
+        <style>
+            google-map {
+                height: 100%;
+                top: 0;
+                left: 0;
+            }
+        </style>
+
+        <geo-location latitude="{{latitude}}" longitude="{{longitude}}"></geo-location>            
+            <google-map fit-to-markers api-key="AIzaSyAdbi6BWH1Qxax7B41xbifh717sbD8b41w"
+                    disable-deafult-ui zoom="17">
+            <google-map-marker slot="markers" latitude="[[latitude]]" longitude="[[longitude]]" title="You stay here"></google-map-marker>
+        </google-map>
+
+        </template>
+
+
+    <script>
+        (function map(customElements){
+            'use strict';
+
+            class AppMap extends Polymer.Element {
+                static get is(){ return 'app-map'; }
+                
+                static properties(){
+                    return {
+
+                    };
+                }                
+
+            }
+
+            customElements.define(AppMap.is, AppMap);
+        })(window.customElements);
+    </script>
+</dom-module>
