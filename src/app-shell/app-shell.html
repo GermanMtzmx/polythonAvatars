@@ -25,9 +25,7 @@
 <dom-module id="app-shell">
     <template>
         <style>
-            #header {
-                @apply --toolbar-theme;
-            }
+         
         </style>
         
         <app-location route="{{route}}"></app-location>
@@ -48,8 +46,6 @@
         </app-voicerouter>
 
         <app-header id="header" role="navigation" shadow$="[[isLogged]]">
-            <app-toolbar class="toolbar">
-            </app-toolbar>
         </app-header>
 
         <iron-pages 
