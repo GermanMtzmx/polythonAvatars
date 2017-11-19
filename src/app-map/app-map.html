@@ -2,6 +2,8 @@
 <link rel="import" href="../../bower_components/google-map/google-map.html">
 <link rel="import" href="../../bower_components/geo-location/geo-location.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/google-map/google-map-directions.html">
+
 
 <dom-module id="app-map">
     <template>
@@ -13,16 +15,30 @@
 
 
         <geo-location latitude="{{latitude}}" longitude="{{longitude}}"></geo-location>            
-            <google-map fit-to-markers  zoom="17" api-key="AIzaSyA_0vRrqYQcHm7_WiM3qbgb-qeSf7lgp5Q">
-            <google-map-marker slot="markers" latitude="{{latitude}}" longitude="{{longitude}}" title="You stay here"></google-map-marker>
-            </google-map>
+
+        <google-map map="{{map}}"  latitude="{{latitude}}" longitude="{{longitude}}" 
+            title="You stay here" zoom="15"
+            api-key="AIzaSyAdbi6BWH1Qxax7B41xbifh717sbD8b41w" 
+            disable-default-ui on-api-load='_mapApiLoaded'>
+     
+     
+        </google-map>
+     
+        <google-map-directions
+            map="{{map}}"
+            start-address="GoogleMexico"
+            end-address="Banco BBVA Bancomer, Avenida Cuauhtémoc, Doctores, Ciudad de México, CDMX"
+            api-key="AIzaSyAdbi6BWH1Qxax7B41xbifh717sbD8b41w">
+        </google-map-directions>        
 
         </template>
+    
 
 
     <script>
         (function map(customElements){
             'use strict';
+
 
             class AppMap extends Polymer.Element {
                 static get is(){ return 'app-map'; }
@@ -35,6 +51,10 @@
 
                         longitude:{
                             type:String
+                        },
+
+                        map:{
+                            type: String
                         },
 
                         params:{
@@ -66,6 +86,11 @@
 
                 _placesChanged(places){
                     console.log("places are", places);
+                }
+
+                _mapApiLoaded(){
+                    this.shadowRoot.querySelector('google-map-directions')
+                    console.log(this.shadowRoot.querySelector('google-map-directions').map)
                 }
 
             }
