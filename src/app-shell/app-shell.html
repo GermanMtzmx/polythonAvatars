@@ -8,14 +8,16 @@
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 
+<link rel="import" href="../../bower_components/voice-elements/dist/voice-player.html">
+
 <!-- local imports -->
-<link rel="import" href="../app-login/app-login.html">
-<link rel="import" href="../app-notfound/app-notfound.html">
-<link rel="import" href="../app-home/app-home.html">
-<link rel="import" href="../app-verification/app-verification.html">
+<link rel="lazy-import" href="../app-login/app-login.html">
+<link rel="lazy-import" href="../app-notfound/app-notfound.html">
+<link rel="lazy-import" href="../app-home/app-home.html">
+<link rel="lazy-import" href="../app-verification/app-verification.html">
+<link rel="import" href="../app-map/app-map.html">
 
 <link rel="import" href="../style-foundation/app-theme.html">
-
 
 <dom-module id="app-shell">
     <template>
@@ -33,12 +35,12 @@
             data="{{routeData}}"
             tail="{{subroute}}"
         ></app-route>
+        
+        <voice-player id="polySiry" accent="es-MX" text="Bienvenido a lazme">            
+        </voice-player>
 
         <app-header id="header" role="navigation" shadow$="[[isLogged]]">
             <app-toolbar class="toolbar">
-                <template is="dom-if" if="[[isLogged]]">
-                     <paper-icon-button id="previous" icon="icons:arrow-back"></paper-icon-button>                
-                </template>
             </app-toolbar>
         </app-header>
 
@@ -52,6 +54,8 @@
             <app-home id="home"></app-home>
             <app-notfound id="notfound"></app-notfound>
             <app-verification id="verification"></app-verification>
+            <app-map id="map"></app-map>
+
             
         </iron-pages>
     </template>
@@ -88,23 +92,136 @@
                         isLogged:{
                             type:Boolean,
                             value:false
-                        }                     
+                        },
+
+                        phrase:{
+                            type:String,
+                            value:''
+                        }
+
+
                     }                    
                 }
 
+
+
                 static get observers(){
                     return [
-                        '_routePageChanged(routeData.page)'
+                        '_routePageChanged(routeData.page)',
+                        '_loggedChanged(isLogged)',
+                        '_phraseChanged(phrase)',
+                        '_pageChanged(page)',
                     ]
+                }
+
+                connectedCallback(){
+                    super.connectedCallback();
+
+                        navigator.getUserMedia (
+                        // constraints
+                           {
+                              audio: true
+                           },
+
+                           // successCallback
+                           function(localMediaStream) {
+                            console.log('ok')
+                           },
+
+                           // errorCallback
+                           function(err) {
+                            console.log("The following error occured: " + err);
+                           }
+
+                        );
+
+                        //this.$.polySiry.speak();
+
+
+
+                   
+                        var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition ||window.msSpeechRecognition)();
+                        recognition.lang = 'es-MX'
+                        recognition.continuous = true;
+                        recognition.interimResults = false;
+                        recognition.maxAlternatives = 1;
+                        recognition.start();
+
+                        recognition.onresult = (event) => {
+                            console.log('You said: ', event.results);
+                            if (event.results[event.results.length-1].isFinal){
+                                this.phrase = String(event.results[event.results.length-1][0].transcript).toLowerCase();
+                            }
+                        };
+
+                        recognition.onend = (e)=>{
+                            console.log("ended");
+                            //recognition.start();
+                        }
+
                 }
 
                 _routePageChanged(page){
                     this.page = page || 'login';
-                    console.log(this.page)
                    if (this.page != 'login'){
-                    this.isLogged = true
+                    this.isLogged = true;
                    }
                 }
+
+                _pageChanged(page){
+
+                    var resolvedPageUrl  = this.resolveUrl(`../app-${page}/app-${page}.html`);
+
+                    Polymer.importHref(
+                        resolvedPageUrl,
+                        null,
+                        this._showNotFound.bind(this),
+                        this.loadComplete = true);
+                }                
+
+                _phraseChanged(phrase){
+
+                    if(phrase.lenght <=0 ){
+                        return
+                    }
+                    console.log('phrase was',phrase, 'phrase length', phrase.length);
+                    
+                    if(phrase == 'entrar' || phrase == ' entrar'){
+                        this.set('routeData.page','home');
+                        this.isLogged = true;
+                    } else if(phrase == ' salir' || phrase == "salir ") {
+                    
+                        this.set('routeData.page','login');
+                        this.isLogged = false;
+                        this.$.polySiry.text = "Vuelve pronto";
+                        this.$.polySiry.speak();
+
+                    } else if(phrase == 'cajero' || phrase ==  ' cajero'){
+                        this.page = 'map';
+                        this.set('routeData.page', 'map');
+                        this.$.polySiry.text = "Buscando un cajero cercano.";
+                        this.$.polySiry.speak();
+                    } else {
+                        console.log('whaaat');
+                    }
+                }
+
+                _showNotFound(){
+                    this.page = "notfound";
+                }             
+
+
+                _loggedChanged(loged){
+                    if(loged){
+                        this.set('route.path','home');
+                    }else {
+                        this.set('route.path','login');
+                        
+                        this.isLogged = loged;
+                    }
+                }
+
+
             }
 
             customElements.define(AppShell.is, AppShell);

@@ -1,0 +1,88 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="app-recognition">
+    <script>
+        (function Recognition(customElements){
+            'use strict';
+
+            class AppRecognition extends Polymer.Element {
+                static get is() { return 'app-recognition'; }
+
+                static get properties(){
+                    return {
+                        recognition:{
+                            type:Object
+                        },
+
+                        isActive:{
+                            type:Boolean,
+                            default:false
+                        },
+
+                        word:{
+                            type:String,
+                            notify:true,
+                            reflectToAttribute:true
+                        },
+
+                        hasPermission:{
+                            type:Boolean
+                        }
+                    }
+                }
+
+                static get observers(){
+                    return [
+                        'isActiveChanged(isActive,hasPermission)',
+                    ]
+                }
+
+                connectedCallback(){
+                    super.connectedCallback();
+
+                    this._requestPermissions();
+
+                    if (!hasPermission){ return};
+
+
+                }
+
+                _isActiveChanged(isActive, hasPermission){
+                    return if(isActive && hasPermission) {this.recognition.start();}
+                }
+
+                _setRecognition(){
+                    let recognition = recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition ||window.msSpeechRecognition)();
+                    
+                    recognition.lang = 'es-MX'
+                    recognition.continuous = true;
+                    recognition.interimResults = false;
+                    recognition.maxAlternatives = 1;
+
+                    recognition.onresult = (e) => {
+                        if (event.results[event.results.length-1].isFinal){
+                            this.word = String(event.results[event.results.length-1][0].transcript).toLowerCase();
+                        }                        
+                    }
+
+                    this.set('recognition', recognition);
+                }
+
+                _requestPermissions(){
+                    navigator.getUsersMedia(
+                        {audio:true},
+
+                        (localMediaStream) => {
+                            this.hasPermission = true;
+                        },
+
+                        (err) => {
+                            this.hasPermission = false
+                        } 
+                    )
+                }
+            }
+            customElements.define(AppRecognition.is, AppRecognition);
+        })(window.customElements);
+    </script>
+</dom-module>

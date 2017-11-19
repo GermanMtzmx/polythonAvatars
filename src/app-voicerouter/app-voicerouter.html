@@ -1,0 +1,32 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+
+<dom-module id="app-voicerouter">
+    <template>
+        
+    </template>
+
+    <script>
+        (function VR(customElements){
+        'use strict';
+
+        class AppVoiceRouter extends Polymer.Element {
+            static get is(){ return 'app-voicerouter';}
+
+            static get properties(){
+                return {
+                    pageConfiguration:{
+                        type:Array,
+                        value:[]
+                    },
+
+                    currentPage:{
+                        type:String,
+
+                    }
+                }
+            }
+        }
+        customElements.define(AppVoiceRouter.is, AppVoiceRouter);
+    })(window.customElements);</script>
+</dom-module>

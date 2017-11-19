@@ -1,0 +1,20 @@
+<script>
+    const route {
+        page:'login',
+        voiceSpeechActive:false
+    }
+
+    const routeReducer = (state=route, action) => {
+        switch(action.type){
+            case 'PAGE_CHANGED':
+                return Object.assign({},{
+                    page:action.payload,
+                    voiceSpeechActive:true
+
+                });
+
+            default:
+                return state
+        }
+    }
+</script>

@@ -1,6 +1,12 @@
 {
     "entrypoint": "index.html",
     "shell": "src/app-shell/app-shell.html",
+    "fragments": [
+        "src/app-home/app-home.html",
+        "src/app-login/app-login.html",
+        "src/app-map/app-map.html",
+        "src/app-notfound/app-notfound.html"
+    ],
     "sources": [
         "src/**/*",
         "assets/**/*",
