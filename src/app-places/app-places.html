@@ -1,0 +1,106 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/google-map/google-map.html">
+<link rel="import" href="../../bower_components/google-apis/google-maps-api.html">
+
+
+<dom-module id="google-places">
+    <template>
+        <style>
+        :host {
+          display: block;
+        }
+        </style>
+  
+    <paper-input
+      id="inputPaper"
+      value="{{query}}"
+      error-message="[[errorMessage]]">
+    </paper-input>
+      <google-maps-api id="maps" api-key="[[mapsApiKey]]" libraries="places" on-api-load="_onApiLoad"></google-maps-api>
+    </template>
+
+
+  <script>
+  
+  class GooglePlaces extends Polymer.Element {
+
+    static get is() { return 'google-places'; }
+
+    static get properties() {
+        return {
+                      
+            query: {
+                type: String,
+                notify: true
+            },
+
+            place: {
+                type: Object,
+                value: function() {
+                    return {};
+                },
+                notify: true
+            },
+
+
+            locationName: {
+                type: String,
+                notify: true
+            },
+
+            latitude: {
+                type: Number,
+                notify: true
+            },
+
+            longitude: {
+                type: Number,
+                notify: true
+            },
+
+            mapsApiKey: String,
+
+            errorMessage: String
+        };
+      }
+
+
+      
+      static get observers() { return [
+        '_resetLocation()'
+      ]}
+
+        
+
+        _resetLocation() {
+            this.place = {};
+        }
+
+        _onApiLoad() {
+            var rawInput;
+            if (this.$.inputPaper.querySelector('#input')) {
+                rawInput = this.$.inputPaper.inputElement.querySelector('#nativeInput');                                
+            } else {
+                rawInput = this.$.inputPaper.root.querySelector('#nativeInput');
+            }
+            this.autocomplete = new google.maps.places.Autocomplete(rawInput, this.options);
+            console.log(this.options)
+            google.maps.event.addListener(this.autocomplete, 'place_changed', this._onChangePlace.bind(this));
+        }
+
+
+        _onChangePlace() {
+            this.place = this.autocomplete.getPlace();
+            this.locationName = this.autocomplete.getPlace().formatted_address;
+            this.latitude = this.autocomplete.getPlace().geometry.location.lat();
+            this.longitude = this.autocomplete.getPlace().geometry.location.lng();
+            this.dispatchEvent(new CustomEvent('place-clicked', {place: this.place}));
+            console.log(this.place);
+        }
+
+    }
+
+    window.customElements.define(GooglePlaces.is, GooglePlaces);
+  </script>
+</dom-module>

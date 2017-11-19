@@ -1,0 +1,175 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="../../bower_components/voice-elements/dist/voice-player.html">
+
+<!-- local imports -->
+<link rel="lazy-import" href="../app-login/app-login.html">
+<link rel="lazy-import" href="../app-notfound/app-notfound.html">
+<link rel="lazy-import" href="../app-home/app-home.html">
+<link rel="lazy-import" href="../app-verification/app-verification.html">
+<link rel="lazy-import" href="../app-map/app-map.html">
+<link rel="import" href="../app-recognition/app-recognition.html">
+
+<link rel="import" href="../app-voicerouter/app-voicerouter.html">
+
+<link rel="import" href="../style-foundation/app-theme.html">
+
+<dom-module id="app-shell">
+    <template>
+        <style>
+         
+        </style>
+        
+        <app-location route="{{route}}"></app-location>
+
+        <app-route 
+            route="{{route}}"
+            pattern="/:page"
+            data="{{routeData}}"
+            tail="{{subroute}}"
+        ></app-route>
+        
+        <voice-player id="polySiry" accent="es-MX" text="Bienvenido a lazme">            
+        </voice-player>
+
+        <app-recognition id="recognitionApp" word="{{phrase}}"></app-recognition>
+
+        <app-voicerouter id="vrouter" configuration="[[configuration]]" word="{{phrase}}" current-page="{{page}}" active="{{isActive}}">
+        </app-voicerouter>
+
+        <app-header id="header" role="navigation" shadow$="[[isLogged]]">
+        </app-header>
+
+        <iron-pages 
+            role="main"
+            attr-for-selected="id"
+            selected="[[page]]"
+            fallback-selection="notfound"
+        >
+            <app-login id="login"></app-login>
+            <app-home id="home"></app-home>
+            <app-notfound id="notfound"></app-notfound>
+            <app-verification id="verification"></app-verification>
+            <app-map id="map"></app-map>
+
+            
+        </iron-pages>
+    </template>
+
+
+    <script>
+        (function Shell(customElements){
+            'use strict';
+
+            class AppShell extends Polymer.Element {
+                static get is(){ return 'app-shell'; }
+
+                static get properties(){
+                    return {
+                        route:{
+                            type:Object,
+                            value:{}  
+                        },
+
+                        subroute:{
+                            type:Object,
+                            value:{}
+                        },
+
+                        routeData:{
+                            type:Object,
+                            value:{}
+                        },
+
+                        page:{
+                            type:String
+                        },
+
+                        isLogged:{
+                            type:Boolean,
+                            value:false
+                        },
+
+                        phrase:{
+                            type:String,
+                            value:''
+                        },
+                        isActive:{
+                            type:Boolean,
+                            value:false
+                        }
+
+
+                    }                    
+                }
+
+
+
+                static get observers(){
+                    return [
+                        '_routePageChanged(routeData.page)',
+                        '_pageChanged(page)',
+                    ]
+                }
+
+                connectedCallback(){
+                    super.connectedCallback();
+                    this.configuration = [
+                        {
+                            page:'home',
+                            grammar:['entrar', ' entrar']
+                        },
+
+                        {
+                            page:'login',
+                            grammar:['salir', ' salir']
+                        },
+
+                        {
+                            page:'map',
+                            grammar:['cajero', ' cajero']
+                        }
+                    ]
+
+                }
+
+                _routePageChanged(page){
+                    this.page = page || 'login';
+                    
+                    this.isActive = true;
+                   if (this.page != 'login'){
+                    this.isLogged = true;
+                   }
+                }
+
+                _pageChanged(page){
+
+                    var resolvedPageUrl  = this.resolveUrl(`../app-${page}/app-${page}.html`);
+
+                    Polymer.importHref(
+                        resolvedPageUrl,
+                        null,
+                        this._showNotFound.bind(this),
+                        this.loadComplete = true);
+                }                
+
+                _showNotFound(){
+                    this.page = "notfound";
+                }             
+
+
+
+            }
+
+            customElements.define(AppShell.is, AppShell);
+        })(window.customElements);
+    </script>
+</dom-module>

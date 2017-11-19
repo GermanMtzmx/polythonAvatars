@@ -1,0 +1,105 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/voice-elements/dist/voice-player.html">
+
+<dom-module id="app-home">
+    <template>
+        <style include="shared-styles">
+            
+            .home-container{
+                width: 100%;
+                height: 100vh;   
+                color:var(--lz-white,#fafafa);
+                display: flex;
+                flex-direction:column;
+                align-items:center;
+                justify-content:space-around;
+            }
+            
+            #logo {
+              width: 100%;
+              height: 70%;
+              text-align: center;
+              background-image: url("/assets/images/background/back.png");
+              font-weight: bold;
+                
+            }
+
+            #indicator-text {
+                width: 100%;
+                height: 30%;
+                display: flex;
+                background-color:  white;
+                align-items: center;
+                justify-content: center;
+                
+            }
+
+            #login-text {
+                font-size: 1.4em;
+                margin-top: 100px;
+            }
+
+            #subtitle-text {
+                font-size: 1.6em;       
+                border-bottom: 1px solid;
+                font-weight: normal;
+                color: var(--lz-gray,#fafafa);
+            }
+
+            #img-speker {
+               width: 150px;
+               height: 150px;
+               margin-top: 100px;
+            }
+              #img-icon {
+               width: 75px;
+               height: 75px;
+               margin-left: -30%;
+               margin-bottom:  8%;
+            }
+
+  
+
+        </style>
+   <voice-player id="homeSpeaker" accent="es-MX" text="¿En qué te puedo ayudar?">
+
+           <div class="home-container">
+
+                <div id="logo">
+                
+                    <img id="img-speker" src="/assets/images/loader/loader.gif">  
+                    <img id="img-icon" src="/assets/images/icons/guide-dog (1).png"> 
+
+                    <p id="login-text">
+                      ¿En qué te puedo ayudar?
+                    </p>  
+
+                </div>
+
+
+                <div id="indicator-text">
+
+                    <p id="subtitle-text">
+                        Llévame a una sucursal
+                    </p>            
+                </div>     
+
+        </div>
+
+    </template>
+    <script>
+        (function Home(customElements) {
+            'use strict';
+            class AppHome extends Polymer.Element {
+                static get is(){ return 'app-home' }
+                  connectedCallback(){
+
+                    super.connectedCallback();
+                    this.$.homeSpeaker.speak();
+                }
+            }
+            customElements.define(AppHome.is, AppHome);
+        })(window.customElements);
+    </script>
+
+</dom-module>

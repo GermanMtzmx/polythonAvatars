@@ -1,0 +1,144 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/google-map/google-map.html">
+<link rel="import" href="../../bower_components/geo-location/geo-location.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/voice-elements/dist/voice-player.html">
+<link rel="import" href="../../bower_components/google-map/google-map-directions.html">
+
+<link rel="import" href="../../bower_components/good-vibrations/good-vibrations.html"> 
+
+
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-toolbar/paper-toolbar.html">
+
+
+<dom-module id="app-map">
+    <template>
+        <style>
+            google-map {
+                height: calc(100vh - 64px);
+            }
+
+        </style>
+        
+        <paper-toolbar>
+            <div slot="top" class="title">Bank</div>
+        </paper-toolbar>
+
+        <voice-player id="mapSpeaker" accent="es-MX" text="Buscando el cajero mas cercano">            
+        </voice-player>
+           <voice-player id="mapDirections" accent="es-MX" text="Te diriges ha Banco BBVA Bancomer, Avenida Cuauhtémoc, Doctores, Ciudad de México, CDMXs, iniciamos tu viaje.">
+            </voice-player>
+
+        <good-vibrations vibrate duration="100"></good-vibrations>
+        
+        <geo-location latitude="{{latitude}}" longitude="{{longitude}}"></geo-location>            
+
+        <google-map map="{{map}}"  latitude="{{latitude}}" longitude="{{longitude}}" 
+            title="You stay here" zoom="15"
+            api-key="AIzaSyAdbi6BWH1Qxax7B41xbifh717sbD8b41w" 
+            on-api-load='_mapApiLoaded'>
+        </google-map>
+     
+        <google-map-directions
+            map="{{map}}"
+            start-address="GoogleMexico"
+            end-address="Banco BBVA Bancomer, Avenida Cuauhtémoc, Doctores, Ciudad de México, CDMX"
+            api-key="AIzaSyAdbi6BWH1Qxax7B41xbifh717sbD8b41w">
+        </google-map-directions>        
+
+ 
+       <paper-card heading="Point A"  alt="Point A">     
+        </voice-player>
+         <div class="card-content">
+                Av Paseo de la Reforma & Calzada Gandhi S/N
+                Chapultepec Polanco, Miguel Hidalgo                
+         </div>
+       </paper-card>        
+
+
+       <paper-card heading="Point B"  alt="Point B">
+            <div class="card-content">
+                    Banco BBVA Bancomer, Avenida Cuauhtémoc, Doctores, Ciudad de México, CDMX                
+            </div>
+        </paper-card>        
+   
+        </template>
+    
+
+
+    <script>
+        (function map(customElements){
+            'use strict';
+
+
+            class AppMap extends Polymer.Element {
+                static get is(){ return 'app-map'; }
+                
+                static properties(){
+                    return {
+                        latitude:{
+                            type:String
+                        },
+
+                        longitude:{
+                            type:String
+                        },
+
+                        map:{
+                            type: String
+                        },
+
+                        params:{
+                            type:Object,
+                            value:{
+                                type:'cashier',
+                                keyword:'bancomer',
+                                key:"AIzaSyC_C1mp_wqnAVyDXMY2lqKHI3OknzZbFyM"
+                            }
+                        },
+
+                        places:{
+                            type:Object
+                        }
+                    };
+                }
+
+                static get observers(){
+                    return [
+                        '_positionChanged(latitude,logitude)',
+                        '_placesChanged(places)'
+                    ]
+                }
+
+                connectedCallback(){
+
+                    super.connectedCallback();
+                    this.$.mapSpeaker.speak();
+                    setTimeout(() => {
+                        console.log("Plis");
+                        this.$.mapDirections.speak();
+
+                    },4000)
+                }                
+
+                _positionChanged(latitude, longitude){
+                    this.set('params.location',`${latitude},${'longitude'}`);
+
+                }
+
+                _placesChanged(places){
+                    console.log("places are", places);
+                }
+
+                _mapApiLoaded(){
+                    this.shadowRoot.querySelector('google-map-directions')
+                    console.log(this.shadowRoot.querySelector('google-map-directions').map)
+                }
+
+            }
+
+            customElements.define(AppMap.is, AppMap);
+        })(window.customElements);
+    </script>
+</dom-module>

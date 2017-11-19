@@ -1,0 +1,102 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="app-recognition">
+    <script>
+        (function Recognition(customElements){
+            'use strict';
+
+            class AppRecognition extends Polymer.Element {
+                static get is() { return 'app-recognition'; }
+
+                static get properties(){
+                    return {
+                        recognition:{
+                            type:Object
+                        },
+
+                        active:{
+                            type:Boolean,
+                            default:false
+                        },
+
+                        word:{
+                            type:String,
+                            value:"",
+                            notify:true,
+                            reflectToAttribute:true
+                        },
+
+                        hasPermission:{
+                            type:Boolean
+                        }
+                    }
+                }
+
+                static get observers(){
+                    return [
+                        '_isActiveChanged(active)'
+                    ]
+                }
+
+                connectedCallback(){
+                    super.connectedCallback();
+                    this._requestPermissions();
+                    
+                    let recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition ||window.msSpeechRecognition)();
+                   
+                    recognition.lang = 'es-MX'
+                    recognition.continuous = true;
+                    recognition.interimResults = false;
+                    recognition.maxAlternatives = 1;
+
+                    recognition.onresult = (event) => {
+                        console.log('You said: ', event.results);
+                        if (event.results[event.results.length-1].isFinal){
+                            this.word = String(event.results[event.results.length-1][0].transcript).toLowerCase();
+                            //console.log("changed ", this.word);
+                            
+
+                        }                        
+                    }
+
+                    recognition.onend = (e)=>{
+                        console.log("ended record")
+                        this.active = false;
+                    }
+
+                    this.set('recognition', recognition);
+                    this.recognition.start();
+
+
+                }
+
+                _isActiveChanged(active){
+                    if(active) {
+                        this.recognition.start();
+                    }else{
+                        this.recognition.stop();
+                    }
+                }
+
+                _setRecognition(){
+
+                }
+
+                _requestPermissions(){
+                    navigator.getUserMedia(
+                        {audio:true},
+
+                        (localMediaStream) => {
+                            this.hasPermission = true;
+                        },
+
+                        (err) => {
+                            this.hasPermission = false
+                        } 
+                    )
+                }
+            }
+            customElements.define(AppRecognition.is, AppRecognition);
+        })(window.customElements);
+    </script>
+</dom-module>

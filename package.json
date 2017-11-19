@@ -1,0 +1,33 @@
+{
+  "name": "polyton",
+  "version": "0.0.1",
+  "description": "asistente para tareas cotidianas bancarias con accesibilidad",
+  "main": "index.js",
+  "scripts": {
+    "test": "polymer test",
+    "serve": "firebase serve",
+    "build": "polymer build",
+    "deploy": "firebase deploy --public=build/es6-unbundled"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-cssmin": "^0.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GermanMtzmx/polyton.git"
+  },
+  "keywords": [
+    "Polymer",
+    "Polyton"
+  ],
+  "author": "German, Ynna, David, Carlos",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GermanMtzmx/polyton/issues"
+  },
+  "homepage": "https://github.com/GermanMtzmx/polyton#readme",
+  "dependencies": {
+    "redux": "^3.7.2"
+  }
+}

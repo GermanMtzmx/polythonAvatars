@@ -1,0 +1,77 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../style-foundation/shared-styles.html">
+
+<link rel="import" href="../../bower_components/voice-elements/dist/voice-player.html">
+
+<dom-module id="app-login">
+    <template>
+        <style include="shared-styles">
+            
+            .login-container{
+                width: 100%;
+                height: 100vh ;
+                background-color: var(--primary-color,#fafafa);
+                color:var(--lz-white,#fafafa);
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            #logo {
+                width: 180px;
+                height: 35px;
+                margin:130px auto 0 auto;
+            }
+
+            #loginText {
+                font-size: 1.4rem;
+                width: 100%;
+                text-align: center;
+                align-self: center;
+                font-weight: bold;
+            }
+
+        </style>
+
+<!--         <voice-player id="loginSpeaker" accent="es-MX" text="Bienvenido a lazmi, porfavor ingresa tu contraseña">            
+        </voice-player> -->
+
+
+        <div class="login-container">
+            
+            <img src="/assets/images/logo.png" alt="lazme logo" id="logo">
+            
+            <p id="loginText">
+                Menciona tu contaseña
+            </p>
+
+        </div>
+        
+    </template>
+
+    <script>
+        (function Login(customElements){
+            'use strict';
+
+            class AppLogin extends Polymer.Element {
+                static get is() { return 'app-login'; }
+
+                static get properties(){
+                    return {
+                        text:{
+                            type:String,
+                            value:""
+                        }
+                    }
+                }
+
+                connectedCallback(){
+                    super.connectedCallback();
+
+                }
+
+            }
+            customElements.define(AppLogin.is, AppLogin);
+        })(window.customElements);
+    </script>
+</dom-module>

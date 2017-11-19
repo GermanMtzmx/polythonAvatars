@@ -1,0 +1,25 @@
+{
+    "entrypoint": "index.html",
+    "shell": "src/app-shell/app-shell.html",
+    "fragments": [
+        "src/app-home/app-home.html",
+        "src/app-login/app-login.html",
+        "src/app-map/app-map.html",
+        "src/app-notfound/app-notfound.html",
+        "src/app-verification/app-verification.html"
+    ],
+    "sources": [
+        "src/**/*",
+        "assets/**/*",
+        "bower.json"
+    ],
+
+    "extraDependencies": [
+        "bower_components/webcomponentsjs/webcomponents-loader.js"
+    ],
+
+    "builds": [
+        {"preset":"es6-unbundled"}
+    ]
+
+}
