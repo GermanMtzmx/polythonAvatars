@@ -40,6 +40,9 @@
     "voice-elements": "zenorocha/voice-elements#^1.0.0",
     "obvi": "^2.0.0",
     "polymer-redux": "^1.0.4",
-    "good-vibrations": "kcmr/good-vibrations#^1.0.3"
+    "good-vibrations": "kcmr/good-vibrations#^1.0.3",
+    "paper-card": "PolymerElements/paper-card#^2.0.0",
+    "paper-toolbar": "PolymerElements/paper-toolbar#^2.0.0"
+
   }
 }

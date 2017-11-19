@@ -116,7 +116,6 @@
                 static get observers(){
                     return [
                         '_routePageChanged(routeData.page)',
-                        '_loggedChanged(isLogged)',
                         '_pageChanged(page)',
                     ]
                 }
@@ -160,27 +159,12 @@
                         null,
                         this._showNotFound.bind(this),
                         this.loadComplete = true);
-
-                    
-
-
                 }                
-
 
                 _showNotFound(){
                     this.page = "notfound";
                 }             
 
-
-                _loggedChanged(loged){
-                    if(loged){
-                        this.set('route.path','home');
-                    }else {
-                        this.set('route.path','login');
-                        
-                        this.isLogged = loged;
-                    }
-                }
 
 
             }
