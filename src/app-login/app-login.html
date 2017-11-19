@@ -23,7 +23,7 @@
                 margin:130px auto 0 auto;
             }
 
-            #login-text {
+            #loginText {
                 font-size: 1.4rem;
                 width: 100%;
                 text-align: center;
@@ -33,15 +33,15 @@
 
         </style>
 
-        <voice-player id="loginSpeaker" accent="es-MX" text="Bienvenido a lazme, porfavor ingresa tu contraseña">
-            
-        </voice-player>
+<!--         <voice-player id="loginSpeaker" accent="es-MX" text="Bienvenido a lazmi, porfavor ingresa tu contraseña">            
+        </voice-player> -->
+
 
         <div class="login-container">
             
             <img src="/assets/images/logo.png" alt="lazme logo" id="logo">
-
-            <p id="login-text">
+            
+            <p id="loginText">
                 Menciona tu contaseña
             </p>
 
@@ -55,10 +55,20 @@
             class AppLogin extends Polymer.Element {
                 static get is() { return 'app-login'; }
 
+                static get properties(){
+                    return {
+                        text:{
+                            type:String,
+                            value:""
+                        }
+                    }
+                }
+
                 connectedCallback(){
                     super.connectedCallback();
-                    this.$.loginSpeaker.speak();
+
                 }
+
             }
             customElements.define(AppLogin.is, AppLogin);
         })(window.customElements);
