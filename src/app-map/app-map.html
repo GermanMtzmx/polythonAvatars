@@ -27,6 +27,9 @@
 
         <voice-player id="mapSpeaker" accent="es-MX" text="Buscando el cajero mas cercano">            
         </voice-player>
+           <voice-player id="mapDirections" accent="es-MX" text="Te diriges ha Banco BBVA Bancomer, Polanco, iniciamos tu viaje.">
+            </voice-player>
+
         <good-vibrations vibrate duration="100"></good-vibrations>
         
         <geo-location latitude="{{latitude}}" longitude="{{longitude}}"></geo-location>            
@@ -45,7 +48,8 @@
         </google-map-directions>        
 
  
-       <paper-card heading="Point A"  alt="Point A">
+       <paper-card heading="Point A"  alt="Point A">     
+        </voice-player>
          <div class="card-content">
                 Av Paseo de la Reforma & Calzada Gandhi S/N
                 Chapultepec Polanco, Miguel Hidalgo                
@@ -111,6 +115,11 @@
 
                     super.connectedCallback();
                     this.$.mapSpeaker.speak();
+                    setTimeout(() => {
+                        console.log("Plis");
+                        this.$.mapDirections.speak();
+
+                    },4000)
                 }                
 
                 _positionChanged(latitude, longitude){
