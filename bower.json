@@ -40,6 +40,7 @@
     "voice-elements": "zenorocha/voice-elements#^1.0.0",
     "obvi": "^2.0.0",
     "polymer-redux": "^1.0.4",
-    "paper-card": "PolymerElements/paper-card#^2.0.0"
+    "paper-card": "PolymerElements/paper-card#^2.0.0",
+    "paper-toolbar": "PolymerElements/paper-toolbar#^2.0.0"
   }
 }
