@@ -2,7 +2,7 @@
 <link rel="import" href="../../bower_components/google-map/google-map.html">
 <link rel="import" href="../../bower_components/geo-location/geo-location.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-
+<link rel="import" href="../../bower_components/voice-elements/dist/voice-player.html">
 <dom-module id="app-map">
     <template>
         <style>
@@ -11,7 +11,8 @@
             }
         </style>
 
-
+        <voice-player id="mapSpeaker" accent="es-MX" text="Buscando el cajero mas cercano">            
+        </voice-player>
         <geo-location latitude="{{latitude}}" longitude="{{longitude}}"></geo-location>            
             <google-map fit-to-markers  zoom="17" api-key="AIzaSyA_0vRrqYQcHm7_WiM3qbgb-qeSf7lgp5Q">
             <google-map-marker slot="markers" latitude="{{latitude}}" longitude="{{longitude}}" title="You stay here"></google-map-marker>
@@ -58,6 +59,12 @@
                         '_placesChanged(places)'
                     ]
                 }
+
+                connectedCallback(){
+
+                    super.connectedCallback();
+                    this.$.mapSpeaker.speak();
+                }                
 
                 _positionChanged(latitude, longitude){
                     this.set('params.location',`${latitude},${'longitude'}`);
