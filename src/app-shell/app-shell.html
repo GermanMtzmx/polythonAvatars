@@ -11,10 +11,10 @@
 <link rel="import" href="../../bower_components/voice-elements/dist/voice-player.html">
 
 <!-- local imports -->
-<link rel="import" href="../app-login/app-login.html">
-<link rel="import" href="../app-notfound/app-notfound.html">
-<link rel="import" href="../app-home/app-home.html">
-<link rel="import" href="../app-verification/app-verification.html">
+<link rel="lazy-import" href="../app-login/app-login.html">
+<link rel="lazy-import" href="../app-notfound/app-notfound.html">
+<link rel="lazy-import" href="../app-home/app-home.html">
+<link rel="lazy-import" href="../app-verification/app-verification.html">
 <link rel="import" href="../app-map/app-map.html">
 
 <link rel="import" href="../style-foundation/app-theme.html">
@@ -45,9 +45,6 @@
 
         <app-header id="header" role="navigation" shadow$="[[isLogged]]">
             <app-toolbar class="toolbar">
-                <template is="dom-if" if="[[isLogged]]">
-                     <paper-icon-button on-tap="_goHome" id="previous" icon="icons:arrow-back"></paper-icon-button>                
-                </template>
             </app-toolbar>
         </app-header>
 
@@ -116,7 +113,8 @@
                     return [
                         '_routePageChanged(routeData.page)',
                         '_loggedChanged(isLogged)',
-                        '_phraseChanged(phrase)'
+                        '_phraseChanged(phrase)',
+                        '_pageChanged(page)',
                     ]
                 }
 
@@ -165,10 +163,6 @@
                             //recognition.start();
                         }
 
-                                          
-                        
-                    
-
                 }
 
                 _routePageChanged(page){
@@ -176,9 +170,18 @@
                    if (this.page != 'login'){
                     this.isLogged = true;
                    }
-
-
                 }
+
+                _pageChanged(page){
+
+                    var resolvedPageUrl  = this.resolveUrl(`../app-${page}/app-${page}.html`);
+
+                    Polymer.importHref(
+                        resolvedPageUrl,
+                        null,
+                        this._showNotFound.bind(this),
+                        this.loadComplete = true);
+                }                
 
                 _phraseChanged(phrase){
 
@@ -207,13 +210,10 @@
                     }
                 }
 
-                _goHome(){
-                    this.page = "home";
-                }
+                _showNotFound(){
+                    this.page = "notfound";
+                }             
 
-                _login(){
-                    alert("loggginn")
-                }
 
                 _loggedChanged(loged){
                     if(loged){
