@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/voice-elements/dist/voice-player.html">
 <link rel="import" href="../../bower_components/google-map/google-map-directions.html">
+<link rel="import" href="../../bower_components/good-vibrations/good-vibrations.html"> 
 
 
 <dom-module id="app-map">
@@ -16,6 +17,8 @@
 
         <voice-player id="mapSpeaker" accent="es-MX" text="Buscando el cajero mas cercano">            
         </voice-player>
+        <good-vibrations vibrate duration="100"></good-vibrations>
+        
         <geo-location latitude="{{latitude}}" longitude="{{longitude}}"></geo-location>            
 
         <google-map map="{{map}}"  latitude="{{latitude}}" longitude="{{longitude}}" 

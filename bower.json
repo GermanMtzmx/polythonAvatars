@@ -39,6 +39,7 @@
     "paper-icon-button": "PolymerElements/paper-icon-button#^2.0.1",
     "voice-elements": "zenorocha/voice-elements#^1.0.0",
     "obvi": "^2.0.0",
-    "polymer-redux": "^1.0.4"
+    "polymer-redux": "^1.0.4",
+    "good-vibrations": "kcmr/good-vibrations#^1.0.3"
   }
 }
