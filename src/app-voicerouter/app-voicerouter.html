@@ -15,17 +15,45 @@
 
             static get properties(){
                 return {
-                    pageConfiguration:{
+                    configuration:{
                         type:Array,
                         value:[]
                     },
 
                     currentPage:{
                         type:String,
+                        notify:true,
+                        reflectToAttribute:true
 
+                    },
+
+                    word:{
+                        type:String,
+                        value:''
                     }
                 }
             }
+
+            static get observers(){
+                return [
+                    '_configurationChanged(configuration)',
+                    '_spelledChanged(word)'
+                ]
+            }
+
+            _configurationChanged(configuration){
+                console.log("configuration has changed", configuration)
+            }
+
+            _spelledChanged(word){
+                for (let i of this.configuration){
+                    if (i.grammar.includes(word)){
+                        this.currentPage = i.page;
+                        break;
+                    }
+                }
+            }
+
         }
         customElements.define(AppVoiceRouter.is, AppVoiceRouter);
     })(window.customElements);</script>

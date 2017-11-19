@@ -14,13 +14,14 @@
                             type:Object
                         },
 
-                        isActive:{
+                        active:{
                             type:Boolean,
                             default:false
                         },
 
                         word:{
                             type:String,
+                            value:"",
                             notify:true,
                             reflectToAttribute:true
                         },
@@ -33,43 +34,56 @@
 
                 static get observers(){
                     return [
-                        'isActiveChanged(isActive,hasPermission)',
+                        '_isActiveChanged(active)'
                     ]
                 }
 
                 connectedCallback(){
                     super.connectedCallback();
-
                     this._requestPermissions();
-
-                    if (!hasPermission){ return};
-
-
-                }
-
-                _isActiveChanged(isActive, hasPermission){
-                    return if(isActive && hasPermission) {this.recognition.start();}
-                }
-
-                _setRecognition(){
-                    let recognition = recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition ||window.msSpeechRecognition)();
                     
+                    let recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition ||window.msSpeechRecognition)();
+                   
                     recognition.lang = 'es-MX'
                     recognition.continuous = true;
                     recognition.interimResults = false;
                     recognition.maxAlternatives = 1;
 
-                    recognition.onresult = (e) => {
+                    recognition.onresult = (event) => {
+                        console.log('You said: ', event.results);
                         if (event.results[event.results.length-1].isFinal){
                             this.word = String(event.results[event.results.length-1][0].transcript).toLowerCase();
+                            //console.log("changed ", this.word);
+                            
+
                         }                        
                     }
 
+                    recognition.onend = (e)=>{
+                        console.log("ended record")
+                        this.active = false;
+                    }
+
                     this.set('recognition', recognition);
+                    this.recognition.start();
+
+
+                }
+
+                _isActiveChanged(active){
+                    if(active) {
+                        this.recognition.start();
+                    }else{
+                        this.recognition.stop();
+                    }
+                }
+
+                _setRecognition(){
+
                 }
 
                 _requestPermissions(){
-                    navigator.getUsersMedia(
+                    navigator.getUserMedia(
                         {audio:true},
 
                         (localMediaStream) => {
