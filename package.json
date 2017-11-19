@@ -26,5 +26,8 @@
   "bugs": {
     "url": "https://github.com/GermanMtzmx/polyton/issues"
   },
-  "homepage": "https://github.com/GermanMtzmx/polyton#readme"
+  "homepage": "https://github.com/GermanMtzmx/polyton#readme",
+  "dependencies": {
+    "redux": "^3.7.2"
+  }
 }

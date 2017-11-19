@@ -5,7 +5,8 @@
         "src/app-home/app-home.html",
         "src/app-login/app-login.html",
         "src/app-map/app-map.html",
-        "src/app-notfound/app-notfound.html"
+        "src/app-notfound/app-notfound.html",
+        "src/app-verification/app-verification.html"
     ],
     "sources": [
         "src/**/*",

@@ -15,20 +15,17 @@
 <link rel="lazy-import" href="../app-notfound/app-notfound.html">
 <link rel="lazy-import" href="../app-home/app-home.html">
 <link rel="lazy-import" href="../app-verification/app-verification.html">
-<link rel="import" href="../app-map/app-map.html">
+<link rel="lazy-import" href="../app-map/app-map.html">
+<link rel="import" href="../app-recognition/app-recognition.html">
+
+<link rel="import" href="../app-voicerouter/app-voicerouter.html">
 
 <link rel="import" href="../style-foundation/app-theme.html">
-<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
-
-
-
 
 <dom-module id="app-shell">
     <template>
         <style>
-            #header {
-                @apply --toolbar-theme;
-            }
+         
         </style>
         
         <app-location route="{{route}}"></app-location>
@@ -43,9 +40,12 @@
         <voice-player id="polySiry" accent="es-MX" text="Bienvenido a lazme">            
         </voice-player>
 
+        <app-recognition id="recognitionApp" word="{{phrase}}"></app-recognition>
+
+        <app-voicerouter id="vrouter" configuration="[[configuration]]" word="{{phrase}}" current-page="{{page}}" active="{{isActive}}">
+        </app-voicerouter>
+
         <app-header id="header" role="navigation" shadow$="[[isLogged]]">
-            <app-toolbar class="toolbar">
-            </app-toolbar>
         </app-header>
 
         <iron-pages 
@@ -101,6 +101,10 @@
                         phrase:{
                             type:String,
                             value:''
+                        },
+                        isActive:{
+                            type:Boolean,
+                            value:false
                         }
 
 
@@ -113,60 +117,35 @@
                     return [
                         '_routePageChanged(routeData.page)',
                         '_loggedChanged(isLogged)',
-                        '_phraseChanged(phrase)',
                         '_pageChanged(page)',
                     ]
                 }
 
                 connectedCallback(){
                     super.connectedCallback();
+                    this.configuration = [
+                        {
+                            page:'home',
+                            grammar:['entrar', ' entrar']
+                        },
 
-                        navigator.getUserMedia (
-                        // constraints
-                           {
-                              audio: true
-                           },
+                        {
+                            page:'login',
+                            grammar:['salir', ' salir']
+                        },
 
-                           // successCallback
-                           function(localMediaStream) {
-                            console.log('ok')
-                           },
-
-                           // errorCallback
-                           function(err) {
-                            console.log("The following error occured: " + err);
-                           }
-
-                        );
-
-                        //this.$.polySiry.speak();
-
-
-
-                   
-                        var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition ||window.msSpeechRecognition)();
-                        recognition.lang = 'es-MX'
-                        recognition.continuous = true;
-                        recognition.interimResults = false;
-                        recognition.maxAlternatives = 1;
-                        recognition.start();
-
-                        recognition.onresult = (event) => {
-                            console.log('You said: ', event.results);
-                            if (event.results[event.results.length-1].isFinal){
-                                this.phrase = String(event.results[event.results.length-1][0].transcript).toLowerCase();
-                            }
-                        };
-
-                        recognition.onend = (e)=>{
-                            console.log("ended");
-                            //recognition.start();
+                        {
+                            page:'map',
+                            grammar:['cajero', ' cajero']
                         }
+                    ]
 
                 }
 
                 _routePageChanged(page){
                     this.page = page || 'login';
+                    
+                    this.isActive = true;
                    if (this.page != 'login'){
                     this.isLogged = true;
                    }
@@ -181,34 +160,12 @@
                         null,
                         this._showNotFound.bind(this),
                         this.loadComplete = true);
+
+                    
+
+
                 }                
 
-                _phraseChanged(phrase){
-
-                    if(phrase.lenght <=0 ){
-                        return
-                    }
-                    console.log('phrase was',phrase, 'phrase length', phrase.length);
-                    
-                    if(phrase == 'entrar' || phrase == ' entrar'){
-                        this.set('routeData.page','home');
-                        this.isLogged = true;
-                    } else if(phrase == ' salir' || phrase == "salir ") {
-                    
-                        this.set('routeData.page','login');
-                        this.isLogged = false;
-                        this.$.polySiry.text = "Vuelve pronto";
-                        this.$.polySiry.speak();
-
-                    } else if(phrase == 'cajero' || phrase ==  ' cajero'){
-                        this.page = 'map';
-                        this.set('routeData.page', 'map');
-                        this.$.polySiry.text = "Buscando un cajero cercano.";
-                        this.$.polySiry.speak();
-                    } else {
-                        console.log('whaaat');
-                    }
-                }
 
                 _showNotFound(){
                     this.page = "notfound";
